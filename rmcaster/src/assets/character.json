@@ -1,0 +1,66 @@
+{
+    "title": "Character",
+    "results": 
+        {
+            "casterType": { 
+                "title": "Type of Caster",
+                "tableList":[
+                    {
+                      "title": "Channeling",
+                      "typeIndex": 0
+                    },
+                    {
+                      "title": "Essence",
+                      "typeIndex": 1
+                    },
+                    {
+                      "title": "Mentalism",
+                      "typeIndex": 2
+                    }
+                ]
+              },
+              "stats": [
+                {
+                  "name": "agility",
+                  "abbr": "Ag"
+                  
+                },
+                {
+                  "name": "constitution",
+                  "abbr": "Co"
+                },
+                {
+                  "name": "memory",
+                  "abbr": "Me"
+                },
+                {
+                  "name": "reasoning",
+                  "abbr": "Re"
+                },
+                {
+                  "name": "selfDiscipline",
+                  "abbr": "Sd"
+                },
+                {
+                  "name": "empathy",
+                  "abbr": "Em"
+                },
+                {
+                  "name": "intuition",
+                  "abbr": "In"
+                },
+                {
+                  "name": "presence",
+                  "abbr": "Pr"
+                },
+                {
+                  "name": "quicknes",
+                  "abbr": "Qu"
+                },
+                {
+                  "name": "strength",
+                  "abbr": "St"
+                }
+              ]
+        }
+}

@@ -1,0 +1,196 @@
+{
+    "title": "Other Modifications",
+    "results": 
+        {
+            "nonInstantSnap": { 
+                "title": "Non-instantaneous Spell Cast as a Snap Action",
+                "modifiers": [-20,-20,-20]
+              },
+            "powerPointsUsed": { 
+                "title": "Overall Power Points Used",
+                "tableList":[
+                    {
+                      "title": "26% to 50%",
+                      "min": 26,
+                      "max": 50,
+                      "modifiers": [-10,-10,-10]
+                    },
+                    {
+                      "title": "51% to 75%",
+                      "min": 51,
+                      "max": 75,
+                      "modifiers": [-20,-20,-20]
+                    },
+                    {
+                      "title": "76% to 100%",
+                      "min": 76,
+                      "max": 100,
+                      "modifiers": [-30,-30,-30]
+                    }
+                ]
+              },
+              "hitPointsUsed": { 
+                "title": "Overall Hit Points Used",
+                "tableList":[
+                    {
+                      "title": "26% to 50%",
+                      "min": 26,
+                      "max": 50,
+                      "modifiers": [-10,-10,-10]
+                    },
+                    {
+                      "title": "51% to 75%",
+                      "min": 51,
+                      "max": 75,
+                      "modifiers": [-20,-20,-20]
+                    },
+                    {
+                      "title": "76% to 100%",
+                      "min": 76,
+                      "max": 100,
+                      "modifiers": [-30,-30,-30]
+                    }
+                ]
+              },
+            "spellListType": { 
+                "title": "Spell List Type",
+                "tableList":[
+                    {
+                      "title": "Own Base, Own Realm",
+                      "modifiers": [10,10,10]
+                    },
+                    {
+                      "title": "Open, Own Realm",
+                      "modifiers": [5,5,5]
+                    },
+                    {
+                      "title": "Closed, Own Realm",
+                      "modifiers": [0,0,0]
+                    },
+                    {
+                      "title": "Arcane Lists",
+                      "modifiers": [-5,-5,-5]
+                    },
+                    {
+                      "title": "Other Base, Own Realm",
+                      "modifiers": [-10,-10,-10]
+                    },
+                    {
+                      "title": "Open List, Other Realm",
+                      "modifiers": [-10,-10,-10]
+                    },
+                    {
+                      "title": "Closed List, Other Realm",
+                      "modifiers": [-20,-20,-20]
+                    },
+                    {
+                      "title": "Base List, Other Realm",
+                      "modifiers": [-30,-30,-30]
+                    }
+                ]
+              },
+            "freeHands": { 
+                "title": "Free Hands",
+                "tableList":[
+                    {
+                      "title": "None",
+                      "modifiers": [-20, -30, 0]
+                    },
+                    {
+                      "title": "One",
+                      "modifiers": [0, 0 ,0]
+                    },
+                    {
+                      "title": "Two",
+                      "modifiers": [5, 10, 0]
+                    }
+                ]
+              },
+            "useOfVoice": { 
+                "title": "Use of Voice",
+                "tableList":[
+                    {
+                      "title": "None",
+                      "modifiers": [-10, -5, 0]
+                    },
+                    {
+                      "title": "Whisper",
+                      "modifiers": [0,0,0]
+                    },
+                    {
+                      "title": "Normal",
+                      "modifiers": [5,0,0]
+                    },
+                    {
+                      "title": "Shout",
+                      "modifiers": [10, 5, 0]
+                    }
+                ]
+              },
+            "helmet": { 
+                "title": "Helmet",
+                "tableList":[
+                    {
+                      "title": "None",
+                      "modifiers": [0,0,0]
+                    },
+                    {
+                      "title": "Leather",
+                      "modifiers": [0, -20, -30]
+                    },
+                    {
+                      "title": "Leather & Metal",
+                      "modifiers": [-10, -30, -40]
+                    },
+                    {
+                      "title": "Metal",
+                      "modifiers": [-20, -40, -60]
+                    }
+                ]
+              },
+            "equipment": { 
+                "title": "Non-instantaneous Spell Cast as a Snap Action",
+                "modifiers": [-20,-20,-20]
+              },
+            "armor": { 
+                "title": "Armor Status",
+                "tableList":[
+                    {
+                      "title": "Normal ATs 1, 2, 3, 4",
+                      "types": [1,2,3,4],
+                      "modifiers": [0,0,0]
+                    },
+                    {
+                      "title": "Normal ATs 5, 6",
+                      "types": [5,6],
+                      "modifiers": [0,-10,0]
+                    },
+                    {
+                      "title": "Normal ATs 7, 8",
+                      "types": [7,8],
+                      "modifiers": [0,-20,0]
+                    },
+                    {
+                      "title": "Normal ATs 9, 10",
+                      "types": [9,10],
+                      "modifiers": [0,-25,0]
+                    },
+                    {
+                      "title": "Normal ATs 11",
+                      "types": [11],
+                      "modifiers": [0,-40,0]
+                    },
+                    {
+                      "title": "Normal ATs 12",
+                      "types": [12],
+                      "modifiers": [0,-50,0]
+                    },
+                    {
+                      "title": "Normal ATs 13, 14",
+                      "types": [13,14],
+                      "modifiers": [-30,-40,0]
+                    }
+                ]
+              }
+        }
+}

@@ -1,0 +1,69 @@
+{
+    "title": "SPELL CASTING STATIC MANEUVER TABLE T–4.5",
+    "results": 
+    [
+        {
+            "title": "Spectacular Failure",
+            "min": null,
+            "max": -26,
+            "description": "Your spell fails; roll on the SL Spell Failure Table 6.6 and add three times the total of all applicable modifications from the Spell Casting Modifications Table T-4.6.",
+            "unusual": false
+        },
+        {
+            "title": "Absolute Failure",
+            "min": -25,
+            "max": 50,
+            "description": "Your spell fails; roll on the SL Spell Failure Table 6.6 and add twice the total of all applicable modifications from the Spell Casting Modifications Table T-4.6.",
+            "unusual": false
+        },
+        {
+            "title": "Failure",
+            "min": 51,
+            "max": 75,
+            "description": "Your spell fails; roll on the SL Spell Failure Table 6.6 and add the total of all applicable modifications from the Spell Casting Modifications Table T-4.6",
+            "unusual": false
+        },
+        {
+            "title": "Unusual Event",
+            "min": 66,
+            "max": 66,
+            "description": "You become confused and somehow cast the wrong spell. The GM should randomly select one of your other spells. Any results are applied to the target of your original spell (a GM may choose to ignore normal range limitations).",
+            "unusual": true
+        },
+        {
+            "title": "Partial Success",
+            "min": 76,
+            "max": 90,
+            "description": "You complete part of the spell casting. You may cast the spell normally next round as a 50% activity action (i.e., no static maneuver is required).",
+            "unusual": false
+        },
+        {
+            "title": "Near Success",
+            "min": 91,
+            "max": 110,
+            "description": "You cast your spell normally at the end of the deliberate action phase of the current round.",
+            "unusual": false
+        },
+        {
+            "title": "Unusual Success",
+            "min": 100,
+            "max": 100,
+            "description": "Your spell is cast and you get a +30 bonus (non-cumulative) to your next spell casting static maneuver (if it occurs in the next 10 minutes).",
+            "unusual": true
+        },
+        {
+            "title": "Success",
+            "min": 111,
+            "max": 175,
+            "description": "Your spell is cast normally.",
+            "unusual": false
+        },
+        {
+            "title": "Absolute Success",
+            "min": 176,
+            "max": null,
+            "description": "Your spell is cast and you get a +10 bonus (non-cumulative) to your next spell casting static maneuver (if it occurs in the next 10 minutes).",
+            "unusual": false
+        }
+    ]
+}
