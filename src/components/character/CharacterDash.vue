@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="container">
-      <h1>Character Dashboard</h1>
       <div class="card" style="width: 18rem;">
           <div class="card-body">
               <h5 class="card-title">Character Menu</h5>
