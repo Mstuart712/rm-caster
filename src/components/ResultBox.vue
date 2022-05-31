@@ -1,13 +1,11 @@
 <template>
   <div>
-    <div class="card" style="max-width: 18rem;">
+    <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Result Box</h5>
+            <h5 class="card-title">Dice Roll</h5>
             <form @submit.prevent="addNewSpellTotal">
                 <div class="mb-3">
-                    <label for="spellInput" class="form-label">Spell Total</label>
                     <input v-model="newTotal" type="string" class="form-control" id="spellInput" aria-describedby="resultHelp">
-                    <div id="resultHelp" class="form-text">Final modified spell number.</div>
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

@@ -3,20 +3,19 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Level - Spell</h5>
-            <form @submit.prevent="setModifier">
+            <form>
                 <div class="mb-3">
-                    <input v-model="state.spellLevel" type="string" class="form-control" id="spellLevel">
+                    <input v-model="state.spellLevel" v-on:keypress="numbersOnly" type="string" class="form-control" id="spellLevel">
                     <div class="form-text">Spell Level.</div>
                 </div>
                 <div class="mb-3">
-                    <input v-model="state.roundsOfPrep" type="string" class="form-control" id="roundsOfPrep">
+                    <input v-model="state.roundsOfPrep" v-on:keypress="numbersOnly" type="string" class="form-control" id="roundsOfPrep">
                     <div class="form-text">Rounds of Prep.</div>
                 </div>
                 <div class="mb-3">
                   <input type="checkbox" id="isInstant" v-model="state.isInstant" />
-                  <label for="isInstant"> Instant Cast</label>
+                  <label class="left-margin-5" for="isInstant"> Instant Cast</label>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <span class="badge bg-danger">{{state.result}}</span>
         </div>
@@ -28,6 +27,7 @@
 import { reactive, onMounted, watch } from 'vue'
 import { userCharacter } from '../../stores/character';
 import prepRounds from '../../assets/prepRounds.json'
+import { useValidation } from '../../helpers/validation.js';
 
 export default {
   name: 'RoundsPrep',
@@ -44,7 +44,18 @@ export default {
         isInstant: false,
         roundsOfPrep: 0
      });
+    const { numbersOnly } = useValidation();
     const currentSelection = reactive({ result: "Spell Level" });
+    const modAccess = "spellPrep";
+
+
+    watch(
+      () => [state.spellLevel, state.isInstant, state.roundsOfPrep],
+      () => {
+        myCharacter.setSpellPrep(modAccess, state.spellLevel, state.roundsOfPrep, state.isInstant, props.characterId);
+        initComponent()
+      }
+    )
 
     const spellDiff = () => {
       return parseFloat(state.level) - parseFloat(state.spellLevel);
@@ -81,6 +92,10 @@ export default {
     }
 
     const initComponent = async () => {
+      let spellPrepObj = myCharacter.getSpellModObj(props.characterId, modAccess);
+      state.isInstant = spellPrepObj.isInstant;
+      state.roundsOfPrep = spellPrepObj.roundsPrep;
+      state.spellLevel = spellPrepObj.spellLevel;
       setModifier();
     }
 
@@ -95,7 +110,8 @@ export default {
       state,
       currentSelection,
       myCharacter,
-      spellDiff
+      spellDiff,
+      numbersOnly
     };
   },
 }
@@ -106,5 +122,8 @@ export default {
 .spell-types {
     min-width: 250px;
     margin-bottom: 10px;
+}
+.left-margin-5 {
+  margin-left: 5px;
 }
 </style>

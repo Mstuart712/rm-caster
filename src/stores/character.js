@@ -80,6 +80,11 @@ export const userCharacter = defineStore({
       this.characters[id].spellMods[mod].total = total;
       this.characters[id].spellMods[mod].totalLeft = totalLeft;
     },
+    setSpellPrep(mod, spellLevel, roundsPrep, isInstant, id) {
+      this.characters[id].spellMods[mod].spellLevel = spellLevel;
+      this.characters[id].spellMods[mod].roundsPrep = roundsPrep;
+      this.characters[id].spellMods[mod].isInstant = isInstant;
+    },
     create(id) {
       this.list.push(id);
       const newChar = {};
@@ -155,6 +160,11 @@ const getDefaultState = () => ({
         oldMod: 0,
         total: null,
         totalLeft: null
+      },
+      spellPrep: {
+        spellLevel: 0,
+        roundsPrep: 0,
+        isInstant: false
       },
       rawTotal: 0,
       modifiedTotal: 0

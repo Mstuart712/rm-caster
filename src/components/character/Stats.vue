@@ -4,13 +4,18 @@
         <div class="card-body">
             <form @submit.prevent="setStats">
                 <div class="row">
+                  <div class="col-lg-3">
+                    <input v-model="state.name" type="string" class="form-control" id="cname">
+                    <div class="form-text">Name</div>
+                  </div>
                   <div class="col-lg-1">
                     <input v-model="state.level" type="string" class="form-control" id="level">
                     <div class="form-text">Level</div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row margin-top-10">
                   <h5 class="card-title">Stats</h5>
+                  <div class="form-text">Add total bonus for each stat</div>
                   <div class="col-lg-1">
                       <input v-model="state.stats.agility" type="string" class="form-control" id="agility">
                       <div class="form-text">Ag</div>
@@ -52,9 +57,8 @@
                       <div class="form-text">St</div>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary margin-top-10">Submit</button>
             </form>
-            <span class="badge bg-danger">{{state.result}}</span>
         </div>
     </div>
   </div>
@@ -77,7 +81,8 @@ export default {
     const state = reactive({ 
       result: 0,
       stats: myStats,
-      level: 1
+      level: 1,
+      name: "valnar jr"
      })
     const newTotal = 0;
     const oldMod = 0;
@@ -85,6 +90,7 @@ export default {
     if(props.id != null) {
       state.stats = { ...state.stats, ...myCharacter.getCharacterById(props.id).stats};
       state.level = myCharacter.getValue(props.id, "level");
+      state.name = myCharacter.getValue(props.id, "name");
     }
 
     function addNewSpellTotal(modValue) {
@@ -93,6 +99,7 @@ export default {
 
     function setStats() {
       myCharacter.setValue("level", state.level, props.id)
+      myCharacter.setValue("name", state.name, props.id)
       myCharacter.setNewStats(state.stats, props.id)
     }
 
@@ -125,5 +132,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.margin-top-10 {
+  margin-top: 10px;
+}
+.card-title {
+  margin-bottom: 0;
+}
 </style>

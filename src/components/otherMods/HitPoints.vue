@@ -3,16 +3,15 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Hit Points</h5>
-            <form @submit.prevent="setModifier">
+            <form>
                 <div class="mb-3">
-                    <input v-model="totalHPLeft.result" type="string" class="form-control" id="hpLeft">
+                    <input v-model="totalHPLeft.result" v-on:keypress="numbersOnly" type="string" class="form-control" id="hpLeft">
                     <div class="form-text">Total Hit Points Left.</div>
                 </div>
                 <div class="mb-3">
-                    <input v-model="totalHP.result" type="string" class="form-control" id="hpTotal">
+                    <input v-model="totalHP.result" v-on:keypress="numbersOnly" type="string" class="form-control" id="hpTotal">
                     <div class="form-text">Total Hit Points.</div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <span class="badge bg-danger">{{state.result}}</span>
         </div>
@@ -21,8 +20,9 @@
 </template>
 
 <script>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, watch } from 'vue'
 import { useCharacterLoader } from '../character/CharacterLoader.js'
+import { useValidation } from '../../helpers/validation.js';
 
 export default {
   name: 'HitPoints',
@@ -37,7 +37,16 @@ export default {
     const totalHP = reactive({ result: 0 });
     const hpPercent = reactive({ result: 0 });
     const { setSpellModTotals, getSpellModObj, findCharacter, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
+    const { numbersOnly } = useValidation();
     const currentCharacter = findCharacter(props.characterId)
+
+    watch(
+      () => [totalHPLeft.result, totalHP.result],
+      () => {
+        setSpellModTotals(modAccess, totalHP.result, totalHPLeft.result, props.characterId);
+        initComponent()
+      }
+    )
 
     const calcMod = (newHpPercent) => {
       for(const item of props.hitPoints.tableList) {
@@ -79,7 +88,8 @@ export default {
       totalHPLeft,
       totalHP,
       hpPercent,
-      setModifier
+      setModifier,
+      numbersOnly
     };
   },
 }

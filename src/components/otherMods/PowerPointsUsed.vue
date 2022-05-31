@@ -3,16 +3,15 @@
     <div class="card">
         <div class="card-body">
             <h5 class="card-title">Power Points</h5>
-            <form @submit.prevent="setModifier">
+            <form>
                 <div class="mb-3">
-                    <input v-model="totalPPLeft.result" type="string" class="form-control" id="ppLeft">
+                    <input v-model="totalPPLeft.result" v-on:keypress="numbersOnly" type="string" class="form-control" id="ppLeft">
                     <div class="form-text">Total Power Points Left.</div>
                 </div>
                 <div class="mb-3">
-                    <input v-model="totalPP.result" type="string" class="form-control" id="ppTotal">
+                    <input v-model="totalPP.result" v-on:keypress="numbersOnly" type="string" class="form-control" id="ppTotal">
                     <div class="form-text">Total Power Points.</div>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
             <span class="badge bg-danger">{{state.result}}</span>
         </div>
@@ -21,8 +20,9 @@
 </template>
 
 <script>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, watch } from 'vue'
 import { useCharacterLoader } from '../character/CharacterLoader.js'
+import { useValidation } from '../../helpers/validation.js';
 
 export default {
   name: 'PowerPointsUsed',
@@ -37,7 +37,16 @@ export default {
     const totalPP = reactive({ result: 0 });
     const ppPercent = reactive({ result: 0 });
     const { setSpellModTotals, getSpellModObj, findCharacter, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
+    const { numbersOnly } = useValidation();
     const currentCharacter = findCharacter(props.characterId)
+
+    watch(
+      () => [totalPPLeft.result, totalPP.result],
+      () => {
+        setSpellModTotals(modAccess, totalPP.result, totalPPLeft.result, props.characterId);
+        initComponent()
+      }
+    )
 
     const calcMod = (newPpPercent) => {
       for(const item of props.powerPoints.tableList) {
@@ -80,6 +89,7 @@ export default {
       totalPPLeft,
       totalPP,
       ppPercent,
+      numbersOnly
     };
   },
 }

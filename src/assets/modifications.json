@@ -189,6 +189,26 @@
                       "title": "Normal ATs 13, 14",
                       "types": [13,14],
                       "modifiers": [-30,-40,0]
+                    },
+                    {
+                      "title": "Normal ATs 15, 16",
+                      "types": [15,16],
+                      "modifiers": [-60, -70, 0]
+                    },
+                    {
+                      "title": "Normal ATs 17, 18",
+                      "types": [17, 18],
+                      "modifiers": [-35, -45, 0]
+                    },
+                    {
+                      "title": "Normal ATs 19",
+                      "types": [19],
+                      "modifiers": [-60, -75, 0]
+                    },
+                    {
+                      "title": "Normal ATs 20",
+                      "types": [20],
+                      "modifiers": [-75, -90, 0]
                     }
                 ]
               }

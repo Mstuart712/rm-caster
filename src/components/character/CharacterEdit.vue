@@ -2,7 +2,6 @@
   <div v-if="widgetReady">
     <div class="row">
       <div class="col-lg-12">
-        <h3>Edit Stats</h3>
         <stats :id="id"></stats>
       </div>
     </div>

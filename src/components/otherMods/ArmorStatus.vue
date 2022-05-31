@@ -12,8 +12,8 @@
                     <button @click="setModifier(index)" class="dropdown-item" href="#">{{item.title}}</button>
                 </li>
             </ul>
-            <div class="col-md-12 col-lg-5">
-                  <input v-model="state.transcend" type="string" class="form-control" id="transcendArmor">
+            <div class="col-md-12 col-lg-5 margin-top-10">
+                  <input v-model="state.transcend" v-on:keypress="numbersOnly" type="string" class="form-control" id="transcendArmor">
                   <div class="form-text">Transcend Armor</div>
             </div>
           </div>
@@ -28,6 +28,7 @@
 <script>
 import { reactive, onMounted, watch } from 'vue'
 import { useCharacterLoader } from '../character/CharacterLoader.js'
+import { useValidation } from '../../helpers/validation.js';
 
 export default {
   name: 'ArmorStatus',
@@ -44,6 +45,7 @@ export default {
     const armorTypes = props.armorType.tableList;
     const currentSelection = reactive({ result: "Armor Type" });
     const { findCharacter, setValue, getValue, getSpellMod, setSpellMod, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
+    const { numbersOnly } = useValidation();
     const currentCharacter = findCharacter(props.characterId)
 
     watch(
@@ -99,7 +101,8 @@ export default {
       state,
       armorTypes,
       currentSelection,
-      currentCharacter
+      currentCharacter,
+      numbersOnly
     };
   },
 }
@@ -113,5 +116,8 @@ export default {
 }
 .spell-types {
     margin-bottom: 10px;
+}
+.margin-top-10 {
+  margin-top:10px;
 }
 </style>
