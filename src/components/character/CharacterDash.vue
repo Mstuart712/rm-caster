@@ -4,7 +4,7 @@
       <div class="card" style="width: 18rem;">
           <div class="card-body">
               <h5 class="card-title">Character Menu</h5>
-              <ul class="list-group">
+              <ul class="list-group list-group-horizontal">
                 <li @click="editStats()" class="list-group-item link-hover">Edit Character</li>
                 <li @click="castSpells()" class="list-group-item link-hover">Spell Casting</li>
               </ul>
@@ -50,5 +50,9 @@ export default {
 <style scoped>
   .link-hover {
     cursor: pointer;
+  }
+  .container {
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 </style>

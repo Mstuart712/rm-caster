@@ -9,6 +9,9 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
+            <span>Bonus Before Dice Roll: {{state.bonus}}</span>
+            <br>
+            <span>Result: {{state.result}}</span>
         </div>
     </div>
   </div>
@@ -16,6 +19,7 @@
 
 <script>
 import { useCharacterLoader } from './character/CharacterLoader.js'
+import { reactive, onMounted, watch } from 'vue'
 
 export default {
   name: 'ResultBox',
@@ -23,9 +27,21 @@ export default {
     characterId: String
   },
   setup(props) {
-    const { getSpellModTotal, setNewModByCharacterId, getModifiedTotal } = useCharacterLoader();
+    const { findCharacter, getSpellModTotal, setNewModByCharacterId, getModifiedTotal } = useCharacterLoader();
     const widgetReady = false;
     const newTotal = 0;
+    const currentCharacter = findCharacter(props.characterId)
+    const state = reactive({ 
+      bonus: 0,
+      result: 0
+    });
+
+    watch(
+      () => [currentCharacter.spellMods.rawTotal, currentCharacter.spellMods.modifiedTotal],
+      () => {
+        initComponent()
+      }
+    )
 
     function addNewSpellTotal() {
       setNewModByCharacterId(props.characterId, getSpellModTotal(props.characterId) + parseFloat(this.newTotal) + parseFloat(50))
@@ -33,18 +49,26 @@ export default {
       console.log("mod total: ", getModifiedTotal(props.characterId))
     }
 
+    const initComponent = async () => {
+      state.bonus = getSpellModTotal(props.characterId) + parseFloat(50);
+      state.result = getModifiedTotal(props.characterId);
+    }
+
+    onMounted(initComponent)
+
     return {
       addNewSpellTotal,
       widgetReady,
-      newTotal
+      newTotal,
+      state
     };
-  },
-  mounted() {
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.margin-left-10 {
+  margin-left: 10px;
+}
 </style>

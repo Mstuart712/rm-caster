@@ -78,7 +78,10 @@ export default {
       state.result = props.armorType.tableList[index].modifiers[currentCharacter.casterTypeIndex];
       state.result = state.result + parseFloat(state.transcend);
       if(state.result > 0) {
+        setValue("transcendArmorLeftOver", state.result, props.characterId);
         state.result = 0;
+      } else {
+        setValue("transcendArmorLeftOver", 0, props.characterId);
       }
       setValue("transcendArmor", state.transcend, props.characterId);
       addModifierTotal(state.result + parseFloat(getOldSpellMod(props.characterId, modAccess) * -1));

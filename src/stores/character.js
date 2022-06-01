@@ -127,6 +127,7 @@ const getDefaultState = () => ({
     roundsPreppedMod: 0,
     oldRoundsPreppedMod: 0,
     transcendArmor: 0,
+    transcendArmorLeftOver: 0,
     name: "valar jr",
     spellMods: {
       handsFree: {

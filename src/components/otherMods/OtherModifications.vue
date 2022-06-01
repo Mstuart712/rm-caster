@@ -11,13 +11,20 @@
         <rounds-prep :character-id="characterId"></rounds-prep>
       </div>
     </div>
-    <div class="row">
-        <caster-type :id="characterId" :caster-type="character.results.casterType"></caster-type>
-        <spell-list-type :character-id="characterId" :spell-list-type="mods.results.spellListType"></spell-list-type>
-        <free-hands :character-id="characterId" :free-hands="mods.results.freeHands"></free-hands>
-        <use-of-voice :character-id="characterId" :voice-used="mods.results.useOfVoice"></use-of-voice>
-        <helmet-type :character-id="characterId" :helmet-material="mods.results.helmet"></helmet-type>
-        <armor-status :character-id="characterId" :armor-type="mods.results.armor"></armor-status>
+    <div class="card other-mods">
+      <div class="card-body">
+        <h5 class="card-title">Other Modifications</h5>
+        <div class="row">
+            <caster-type :id="characterId" :caster-type="character.results.casterType"></caster-type>
+            <spell-list-type :character-id="characterId" :spell-list-type="mods.results.spellListType"></spell-list-type>
+        </div>
+        <div class="row">
+            <free-hands :character-id="characterId" :free-hands="mods.results.freeHands"></free-hands>
+            <use-of-voice :character-id="characterId" :voice-used="mods.results.useOfVoice"></use-of-voice>
+            <helmet-type :character-id="characterId" :helmet-material="mods.results.helmet"></helmet-type>
+            <armor-status :character-id="characterId" :armor-type="mods.results.armor"></armor-status>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -68,5 +75,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
+.other-mods {
+  margin: 15px 0 15px 0;
+}
 </style>

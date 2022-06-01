@@ -32,15 +32,18 @@ export default {
     characterId: String
   },
   setup(props) {
-    const state = reactive({ result: 0 });
+    const state = reactive({ 
+      result: 0,
+      transcend: 0  
+    });
     const modAccess = "helmetType";
     const helmetType = props.helmetMaterial.tableList;
     const currentSelection = reactive({ result: "Helmet Type" });
-    const { findCharacter, getSpellMod, setSpellMod, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
+    const { findCharacter, setValue, getValue, getSpellMod, setSpellMod, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
     const currentCharacter = findCharacter(props.characterId)
 
     watch(
-      () => currentCharacter.casterTypeIndex,
+      () => [currentCharacter.casterTypeIndex, currentCharacter.transcendArmor, currentCharacter.spellMods.armorType.value],
       () => {
         initComponent()
       }
@@ -57,7 +60,12 @@ export default {
     }
 
     const calcMod = (index) => {
+      state.transcend = getValue(props.characterId, "transcendArmorLeftOver");
       state.result = props.helmetMaterial.tableList[index].modifiers[currentCharacter.casterTypeIndex];
+      state.result = state.result + parseFloat(state.transcend);
+      if(state.result > 0) {
+        state.result = 0;
+      }
       addModifierTotal(state.result + parseFloat(getOldSpellMod(props.characterId, modAccess) * -1));
       setOldModByCharacterId(modAccess, state.result, props.characterId);
     };
