@@ -60,7 +60,6 @@ export default {
       setOldModByCharacterId(modAccess, state.result, props.characterId);
     };
     
-    
     const addModifierTotal = (modValue) => {
       setNewByCharacterId(props.characterId, getSpellModTotal(props.characterId) + modValue);
     };

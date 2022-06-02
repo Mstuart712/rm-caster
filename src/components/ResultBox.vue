@@ -45,7 +45,7 @@ export default {
 
     function addNewSpellTotal() {
       setNewModByCharacterId(props.characterId, getSpellModTotal(props.characterId) + parseFloat(this.newTotal) + parseFloat(50))
-      console.log("mod total: ", getSpellModTotal(props.characterId))
+      console.log("raw total: ", getSpellModTotal(props.characterId))
       console.log("mod total: ", getModifiedTotal(props.characterId))
     }
 

@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { reactive, onMounted } from 'vue'
+import { reactive, onMounted, watch } from 'vue'
 import { useCharacterLoader } from '../character/CharacterLoader.js'
 
 export default {
@@ -38,6 +38,13 @@ export default {
     const currentSelection = reactive({ result: "Select Spell List Type" });
     const { findCharacter, getSpellMod, setSpellMod, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
     const currentCharacter = findCharacter(props.characterId)
+
+    watch(
+      () => currentCharacter.casterTypeIndex,
+      () => {
+        initComponent()
+      }
+    )
 
     const addModifierTotal = (modValue) => {
       setNewByCharacterId(props.characterId, getSpellModTotal(props.characterId) + modValue);
