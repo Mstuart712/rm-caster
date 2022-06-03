@@ -5,7 +5,7 @@
             <h5 class="card-title">Dice Roll</h5>
             <form @submit.prevent="addNewSpellTotal">
                 <div class="mb-3">
-                    <input v-model="newTotal" type="string" class="form-control" id="spellInput" aria-describedby="resultHelp">
+                    <input v-model="state.newTotal" type="string" class="form-control" id="spellInput" aria-describedby="resultHelp">
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -29,22 +29,28 @@ export default {
   setup(props) {
     const { findCharacter, getSpellModTotal, setNewModByCharacterId, getModifiedTotal } = useCharacterLoader();
     const widgetReady = false;
-    const newTotal = 0;
     const currentCharacter = findCharacter(props.characterId)
     const state = reactive({ 
       bonus: 0,
-      result: 0
+      result: 0,
+      newTotal: 0
     });
 
     watch(
       () => [currentCharacter.spellMods.rawTotal, currentCharacter.spellMods.modifiedTotal],
       () => {
+        if(state.newTotal == "" || state.newTotal == undefined) {
+          state.newTotal = 0;
+        }
         initComponent()
       }
     )
 
     function addNewSpellTotal() {
-      setNewModByCharacterId(props.characterId, getSpellModTotal(props.characterId) + parseFloat(this.newTotal) + parseFloat(50))
+      if(state.newTotal == "" || state.newTotal == undefined) {
+        state.newTotal = 0;
+      }
+      setNewModByCharacterId(props.characterId, getSpellModTotal(props.characterId) + parseFloat(state.newTotal) + parseFloat(50))
       console.log("raw total: ", getSpellModTotal(props.characterId))
       console.log("mod total: ", getModifiedTotal(props.characterId))
     }
@@ -59,7 +65,6 @@ export default {
     return {
       addNewSpellTotal,
       widgetReady,
-      newTotal,
       state
     };
   }

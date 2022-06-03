@@ -17,43 +17,43 @@
                   <h5 class="card-title">Stats</h5>
                   <div class="form-text">Add total bonus for each stat</div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.agility" type="string" class="form-control" id="agility">
+                      <input v-model="state.stats.agility" type="number" class="form-control" id="agility">
                       <div class="form-text">Ag</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.constitution" type="string" class="form-control" id="constitution">
+                      <input v-model="state.stats.constitution" type="number" class="form-control" id="constitution">
                       <div class="form-text">Co</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.memory" type="string" class="form-control" id="memory">
+                      <input v-model="state.stats.memory" type="number" class="form-control" id="memory">
                       <div class="form-text">Me</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.reasoning" type="string" class="form-control" id="reasoning">
+                      <input v-model="state.stats.reasoning" type="number" class="form-control" id="reasoning">
                       <div class="form-text">Re</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.selfDiscipline" type="string" class="form-control" id="selfDiscipline">
+                      <input v-model="state.stats.selfDiscipline" type="number" class="form-control" id="selfDiscipline">
                       <div class="form-text">SD</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.empathy" type="string" class="form-control" id="empathy">
+                      <input v-model="state.stats.empathy" type="number" class="form-control" id="empathy">
                       <div class="form-text">Em</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.intuition" type="string" class="form-control" id="intuition">
+                      <input v-model="state.stats.intuition" type="number" class="form-control" id="intuition">
                       <div class="form-text">In</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.presence" type="string" class="form-control" id="presence">
+                      <input v-model="state.stats.presence" type="number" class="form-control" id="presence">
                       <div class="form-text">Pr</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.quickness" type="string" class="form-control" id="quickness">
+                      <input v-model="state.stats.quickness" type="number" class="form-control" id="quickness">
                       <div class="form-text">Qu</div>
                   </div>
                   <div class="col-lg-1">
-                      <input v-model="state.stats.strength" type="string" class="form-control" id="strength">
+                      <input v-model="state.stats.strength" type="number" class="form-control" id="strength">
                       <div class="form-text">St</div>
                   </div>
                 </div>
@@ -98,9 +98,26 @@ export default {
     }
 
     function setStats() {
-      myCharacter.setValue("level", state.level, props.id)
-      myCharacter.setValue("name", state.name, props.id)
-      myCharacter.setNewStats(state.stats, props.id)
+      var isValid = this.validate();
+      if(isValid) {
+        myCharacter.setValue("level", state.level, props.id)
+        myCharacter.setValue("name", state.name, props.id)
+        myCharacter.setNewStats(state.stats, props.id)
+      }else {
+        console.log("not valid");
+      }
+    }
+
+    function validate() {
+      for (const item in state.stats) {
+        if(state.stats[item] == "" || state.stats[item] == undefined) {
+          state.stats[item] = 0;
+        }
+      }
+      if(state.level == "" || state.level == undefined) {
+        state.level = 1;
+      }
+      return true;
     }
 
     function calculateMod(ppPercent) {
@@ -124,7 +141,8 @@ export default {
       calculateMod,
       newTotal,
       state,
-      oldMod
+      oldMod,
+      validate
     };
   },
 }

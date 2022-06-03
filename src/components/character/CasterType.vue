@@ -60,8 +60,7 @@ export default {
           break;
         case 3:
           let average = parseFloat(currentCharacter.stats.intuition) + parseFloat(currentCharacter.stats.empathy) + parseFloat(currentCharacter.stats.presence);
-          state.result = average/3;
-          console.log("average arcane: ", state.result);
+          state.result = Math.round(average/3);
           break;
       }
       addModifierTotal(parseFloat(state.result) + parseFloat(getOldCasterTypeMod(props.id) * -1));

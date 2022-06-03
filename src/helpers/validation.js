@@ -14,7 +14,19 @@ export function useValidation() {
       }
   };
 
+  const defaultNullToZero = (evt) => {
+      evt = (evt) ? evt : window.event;
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    console.log("char code", charCode)
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault();;
+      } else {
+        return true;
+      }
+  };
+
   return {
-    numbersOnly
+    numbersOnly,
+    defaultNullToZero
   };
 }

@@ -43,6 +43,12 @@ export default {
     watch(
       () => [totalHPLeft.result, totalHP.result],
       () => {
+        if(totalHP.result == "" || totalHP.result == undefined) {
+          totalHP.result = 0;
+        }
+        if(totalHPLeft.result == "" || totalHPLeft.result == undefined) {
+          totalHPLeft.result = 0;
+        }
         setSpellModTotals(modAccess, totalHP.result, totalHPLeft.result, props.characterId);
         initComponent()
       }

@@ -58,6 +58,9 @@ export default {
     watch(
       () => state.transcend,
       () => {
+        if(state.transcend == "" || state.transcend == undefined) {
+          state.transcend = 0;
+        }
         setValue("transcendArmor", state.transcend, props.characterId);
         initComponent()
       }

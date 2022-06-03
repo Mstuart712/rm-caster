@@ -52,6 +52,12 @@ export default {
     watch(
       () => [state.spellLevel, state.isInstant, state.roundsOfPrep],
       () => {
+        if(state.spellLevel == "" || state.spellLevel == undefined) {
+          state.spellLevel = 0;
+        }
+        if(state.roundsOfPrep == "" || state.roundsOfPrep == undefined) {
+          state.roundsOfPrep = 0;
+        }
         myCharacter.setSpellPrep(modAccess, state.spellLevel, state.roundsOfPrep, state.isInstant, props.characterId);
         initComponent()
       }

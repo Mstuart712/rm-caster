@@ -85,6 +85,12 @@ export const userCharacter = defineStore({
       this.characters[id].spellMods[mod].roundsPrep = roundsPrep;
       this.characters[id].spellMods[mod].isInstant = isInstant;
     },
+    setExtras(mod, items, talents, penalties, eloquence, id) {
+      this.characters[id].spellMods[mod].items = items;
+      this.characters[id].spellMods[mod].talents = talents;
+      this.characters[id].spellMods[mod].penalties = penalties;
+      this.characters[id].spellMods[mod].eloquence = eloquence;
+    },
     create(id) {
       this.list.push(id);
       const newChar = {};
@@ -128,6 +134,8 @@ const getDefaultState = () => ({
     oldRoundsPreppedMod: 0,
     transcendArmor: 0,
     transcendArmorLeftOver: 0,
+    extras: 0,
+    oldExtras: 0,
     name: "valar jr",
     spellMods: {
       handsFree: {
@@ -166,6 +174,12 @@ const getDefaultState = () => ({
         spellLevel: 0,
         roundsPrep: 0,
         isInstant: false
+      },
+      extras: {
+        items: 0,
+        talents: 0,
+        penalties: 0,
+        eloquence: false
       },
       rawTotal: 0,
       modifiedTotal: 0

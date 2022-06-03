@@ -24,6 +24,9 @@
             <helmet-type :character-id="characterId" :helmet-material="mods.results.helmet"></helmet-type>
             <armor-status :character-id="characterId" :armor-type="mods.results.armor"></armor-status>
         </div>
+        <div class="row">
+          <talents-or-prof :character-id="characterId"></talents-or-prof>
+        </div>
       </div>
     </div>
   </div>
@@ -44,10 +47,11 @@ import RoundsPrep from './RoundsPrep.vue'
 import { userCharacter } from '../../stores/character';
 import { reactive } from 'vue'
 import { useRoute } from 'vue-router'
+import TalentsOrProf from './TalentsOrProf.vue'
 
 export default {
   name: 'OtherModifications',
-  components: { PowerPointsUsed, HitPoints, SpellListType, FreeHands, UseOfVoice, HelmetType, ArmorStatus, CasterType, RoundsPrep },
+  components: { PowerPointsUsed, HitPoints, SpellListType, FreeHands, UseOfVoice, HelmetType, ArmorStatus, CasterType, RoundsPrep, TalentsOrProf },
   props: { 
   },
   setup(props) {
