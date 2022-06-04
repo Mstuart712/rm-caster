@@ -68,6 +68,7 @@ export default {
     };
 
     const calcMod = () => {
+      state.roundsOfPrep = parseInt(state.roundsOfPrep, 10)
       let difference = state.difference > 9 ? 9 : state.difference;
       let prep = state.roundsOfPrep > 9 ? 9 : state.roundsOfPrep;
 
