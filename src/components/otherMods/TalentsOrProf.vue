@@ -1,28 +1,52 @@
 <template>
   <div>
     <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Extras</h5>
-            <form>
-                <div class="mb-3">
-                    <input v-model="state.items" v-on:keypress="numbersOnly" type="number" class="form-control" id="items">
-                    <div class="form-text">Items</div>
-                </div>
-                <div class="mb-3">
-                    <input v-model="state.talents" v-on:keypress="numbersOnly" type="number" class="form-control" id="talents">
-                    <div class="form-text">Talents/Professions</div>
-                </div>
-                <div class="mb-3">
-                    <input v-model="state.penalties" v-on:keypress="numbersOnly" type="number" class="form-control" id="penalties">
-                    <div class="form-text">Penalties (put positive numbers in)</div>
-                </div>
-                <div class="mb-3">
-                  <input type="checkbox" id="eloquence" v-model="state.eloquence" />
-                  <label class="left-margin-5" for="eloquence"> Eloquence</label>
-                </div>
-            </form>
-            <span class="badge bg-danger">{{state.result}}</span>
-        </div>
+      <div class="card-body">
+        <h5 class="card-title">Extras</h5>
+        <form>
+          <div class="mb-3">
+            <input v-model="state.ranks" @focusout="zeroValidation(state.ranks, validChecks, 'ranks')"
+              v-on:keypress="numbersOnly" type="number" class="form-control"
+              :class="validChecks.ranks ? '' : 'is-invalid'" id="ranks">
+            <div id="validationranks" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Ranks in Spell List</div>
+          </div>
+          <div class="mb-3">
+            <input v-model="state.items" @focusout="zeroValidation(state.items, validChecks, 'items')"
+              v-on:keypress="numbersOnly" type="number" class="form-control"
+              :class="validChecks.items ? '' : 'is-invalid'" id="items">
+            <div id="validationitems" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Items</div>
+          </div>
+          <div class="mb-3">
+            <input v-model="state.talents" @focusout="zeroValidation(state.talents, validChecks, 'talents')"
+              v-on:keypress="numbersOnly" type="number" class="form-control"
+              :class="validChecks.talents ? '' : 'is-invalid'" id="talents">
+            <div id="validationtalents" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Talents/Professions</div>
+          </div>
+          <div class="mb-3">
+            <input v-model="state.penalties" @focusout="zeroValidation(state.penalties, validChecks, 'penalties')"
+              v-on:keypress="numbersOnly" type="number" class="form-control"
+              :class="validChecks.penalties ? '' : 'is-invalid'" id="penalties">
+            <div id="validationpenalties" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Penalties (put positive numbers in)</div>
+          </div>
+          <div class="mb-3">
+            <input type="checkbox" id="eloquence" v-model="state.eloquence" />
+            <label class="left-margin-5" for="eloquence"> Eloquence</label>
+          </div>
+        </form>
+        <span class="badge bg-danger">{{state.result}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -44,31 +68,47 @@ export default {
         items: 0,
         talents: 0,
         penalties: 0,
+        ranks: 0,
         eloquence: false
-     });
-    const { numbersOnly, defaultNullToZero } = useValidation();
+    });
+    const validChecks = reactive({
+      items: true,
+      talents: true,
+      penalties: true,
+      ranks: true
+    }); 
+    const { numbersOnly, zeroValidation } = useValidation();
     const modAccess = "extras";
 
 
     watch(
-      () => [state.items, state.talents, state.penalties, state.eloquence],
+      () => [state.items, state.talents, state.penalties, state.eloquence, state.ranks],
       () => {
-        if(state.talents == "" || state.talents == undefined) {
-          state.talents = 0;
+        if (state.items !== "") {
+          validChecks.items = true;
         }
-        if(state.items == "" || state.items == undefined) {
-          state.items = 0;
+        if (state.talents !== "") {
+          validChecks.talents = true;
         }
-        if(state.penalties == "" || state.penalties == undefined) {
-          state.penalties = 0;
+        if (state.penalties !== "") {
+          validChecks.penalties = true;
         }
-        myCharacter.setExtras(modAccess, state.items, state.talents, state.penalties, state.eloquence, props.characterId);
-        initComponent()
+        if (state.ranks !== "") {
+          validChecks.ranks = true;
+        }
+        if (state.ranks !== "" && state.ranks !== undefined && state.talents !== "" && state.talents !== undefined && state.items !== "" && state.items !== undefined && state.penalties !== "" && state.penalties !== undefined) {
+          state.talents = parseInt(state.talents, 10)
+          state.items = parseInt(state.items, 10)
+          state.penalties = parseInt(state.penalties, 10)
+          state.ranks = parseInt(state.ranks, 10)
+          myCharacter.setExtras(modAccess, state.items, state.talents, state.penalties, state.eloquence, state.ranks, props.characterId);
+          initComponent()
+        }
       }
     )
 
     const calcMod = () => {
-      state.result = parseFloat(state.items) + parseFloat(state.talents) - parseFloat(state.penalties);
+      state.result = parseFloat(state.items) + parseFloat(state.talents) + parseFloat(state.ranks) - parseFloat(state.penalties);
       state.result = state.eloquence ? state.result + 25 : state.result;
       addModifierTotal(state.result + parseFloat(myCharacter.getValue(props.characterId, "oldExtras") * -1));
       myCharacter.setValue("oldExtras", state.result, props.characterId);
@@ -88,6 +128,7 @@ export default {
       state.talents = spellPrepObj.talents;
       state.penalties = spellPrepObj.penalties;
       state.eloquence = spellPrepObj.eloquence;
+      state.ranks = spellPrepObj.ranks;
       setModifier();
     }
 
@@ -102,7 +143,8 @@ export default {
       state,
       myCharacter,
       numbersOnly,
-      defaultNullToZero
+      validChecks,
+      zeroValidation
     };
   },
 }

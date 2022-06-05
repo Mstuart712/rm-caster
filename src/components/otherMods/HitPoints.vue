@@ -1,20 +1,29 @@
 <template>
   <div>
     <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Hit Points</h5>
-            <form>
-                <div class="mb-3">
-                    <input v-model="totalHPLeft.result" v-on:keypress="numbersOnly" type="string" class="form-control" id="hpLeft">
-                    <div class="form-text">Total Hit Points Left.</div>
-                </div>
-                <div class="mb-3">
-                    <input v-model="totalHP.result" v-on:keypress="numbersOnly" type="string" class="form-control" id="hpTotal">
-                    <div class="form-text">Total Hit Points.</div>
-                </div>
-            </form>
-            <span class="badge bg-danger">{{state.result}}</span>
-        </div>
+      <div class="card-body">
+        <h5 class="card-title">Hit Points</h5>
+        <form>
+          <div class="mb-3">
+            <input v-model="totalHPLeft.result" @focusout="atLeastZeroValidation(totalHPLeft)" v-on:keypress="
+            numbersOnly" type="string" class="form-control" :class="totalHPLeft.isValid ? '' : 'is-invalid'"
+              id="hpLeft">
+            <div id="validationhpLeft" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Total Hit Points Left.</div>
+          </div>
+          <div class="mb-3">
+            <input v-model="totalHP.result" @focusout="atLeastZeroValidation(totalHP)" v-on:keypress=" numbersOnly"
+              type="string" class="form-control" :class="totalHP.isValid ? '' : 'is-invalid'" id="hpTotal">
+            <div id="validationhpTotal" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Total Hit Points.</div>
+          </div>
+        </form>
+        <span class="badge bg-danger">{{state.result}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -33,24 +42,34 @@ export default {
   setup(props) {
     const state = reactive({ result: 0 });
     const modAccess = "hitPoints";
-    const totalHPLeft = reactive({ result: 0 });
-    const totalHP = reactive({ result: 0 });
+    const totalHPLeft = reactive({
+      result: 0,
+      isValid: true
+    });
+    const totalHP = reactive({
+      result: 0,
+      isValid: true
+    });
     const hpPercent = reactive({ result: 0 });
     const { setSpellModTotals, getSpellModObj, findCharacter, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
-    const { numbersOnly } = useValidation();
+    const { numbersOnly, atLeastZeroValidation } = useValidation();
     const currentCharacter = findCharacter(props.characterId)
 
     watch(
       () => [totalHPLeft.result, totalHP.result],
       () => {
-        if(totalHP.result == "" || totalHP.result == undefined) {
-          totalHP.result = 0;
+        if (totalHPLeft.result !== "") {
+          totalHPLeft.isValid = true;
         }
-        if(totalHPLeft.result == "" || totalHPLeft.result == undefined) {
-          totalHPLeft.result = 0;
+        if (totalHP.result !== "") {
+          totalHP.isValid = true;
         }
-        setSpellModTotals(modAccess, totalHP.result, totalHPLeft.result, props.characterId);
-        initComponent()
+        if (totalHP.result !== "" && totalHP.result !== undefined && totalHPLeft.result !== "" && totalHPLeft.result !== undefined) {
+          totalHP.result = parseInt(totalHP.result, 10)
+          totalHPLeft.result = parseInt(totalHPLeft.result, 10)
+          setSpellModTotals(modAccess, totalHP.result, totalHPLeft.result, props.characterId);
+          initComponent()
+        }
       }
     )
 
@@ -95,7 +114,8 @@ export default {
       totalHP,
       hpPercent,
       setModifier,
-      numbersOnly
+      numbersOnly,
+      atLeastZeroValidation
     };
   },
 }

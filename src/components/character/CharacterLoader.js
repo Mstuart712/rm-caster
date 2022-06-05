@@ -12,6 +12,10 @@ export function useCharacterLoader() {
     return myCharacter.getCharacterById(id);
   };
 
+  const resetOldMods = (id) => {
+    return myCharacter.resetOldMods(id);
+  };
+
   const setSpellMod = (mod, newIndex, id) => {
     return myCharacter.setSpellMod(mod, newIndex, id);
   };
@@ -89,6 +93,7 @@ export function useCharacterLoader() {
     setOldCasterModByCharacterId,
     getOldCasterTypeMod,
     setValue,
-    getValue
+    getValue,
+    resetOldMods
   };
 }

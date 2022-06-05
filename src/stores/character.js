@@ -85,11 +85,24 @@ export const userCharacter = defineStore({
       this.characters[id].spellMods[mod].roundsPrep = roundsPrep;
       this.characters[id].spellMods[mod].isInstant = isInstant;
     },
-    setExtras(mod, items, talents, penalties, eloquence, id) {
+    setExtras(mod, items, talents, penalties, eloquence, ranks, id) {
       this.characters[id].spellMods[mod].items = items;
       this.characters[id].spellMods[mod].talents = talents;
       this.characters[id].spellMods[mod].penalties = penalties;
       this.characters[id].spellMods[mod].eloquence = eloquence;
+      this.characters[id].spellMods[mod].ranks = ranks;
+    },
+    resetOldMods(id) {
+      this.characters[id].spellMods.rawTotal = 0;
+      this.characters[id].spellMods.modifiedTotal = 0;
+      this.characters[id].oldCasterIndexMod = 0;
+      this.characters[id].oldRoundsPreppedMod = 0;
+      this.characters[id].oldExtras = 0;
+      for (const item in this.characters[id].spellMods) {
+        if (this.characters[id].spellMods[item].hasOwnProperty('oldMod')) {
+          this.characters[id].spellMods[item].oldMod = 0;
+        }
+      }
     },
     create(id) {
       this.list.push(id);
@@ -179,7 +192,8 @@ const getDefaultState = () => ({
         items: 0,
         talents: 0,
         penalties: 0,
-        eloquence: false
+        eloquence: false,
+        ranks: 0
       },
       rawTotal: 0,
       modifiedTotal: 0

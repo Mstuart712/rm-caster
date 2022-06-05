@@ -1,18 +1,21 @@
 <template>
   <div>
     <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Dice Roll</h5>
-            <form @submit.prevent="addNewSpellTotal">
-                <div class="mb-3">
-                    <input v-model="state.newTotal" type="string" class="form-control" id="spellInput" aria-describedby="resultHelp">
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-            <span>Bonus Before Dice Roll: {{state.bonus}}</span>
-            <br>
-            <span>Result: {{state.result}}</span>
-        </div>
+      <div class="card-body">
+        <h5 class="card-title">Dice Roll</h5>
+        <form @submit.prevent="addNewSpellTotal">
+          <div class="mb-3">
+            <input v-model="state.newTotal" type="string" class="form-control" id="spellInput"
+              aria-describedby="resultHelp">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+          <button class="btn btn-danger margin-left-10" @click="reset">Reset</button>
+        </form>
+        <br>
+        <span>Bonus Before Dice Roll: {{state.bonus}}</span>
+        <br>
+        <span>Result: {{state.result}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -20,6 +23,7 @@
 <script>
 import { useCharacterLoader } from './character/CharacterLoader.js'
 import { reactive, onMounted, watch } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'ResultBox',
@@ -27,9 +31,10 @@ export default {
     characterId: String
   },
   setup(props) {
-    const { findCharacter, getSpellModTotal, setNewModByCharacterId, getModifiedTotal } = useCharacterLoader();
+    const { findCharacter, getSpellModTotal, setNewModByCharacterId, getModifiedTotal, resetOldMods } = useCharacterLoader();
     const widgetReady = false;
     const currentCharacter = findCharacter(props.characterId)
+    const router = useRouter();
     const state = reactive({ 
       bonus: 0,
       result: 0,
@@ -45,6 +50,12 @@ export default {
         initComponent()
       }
     )
+
+    function reset() {
+      console.log("this is hit")
+      resetOldMods(props.characterId)
+      router.go(0)
+    }
 
     function addNewSpellTotal() {
       if(state.newTotal == "" || state.newTotal == undefined) {
@@ -65,7 +76,8 @@ export default {
     return {
       addNewSpellTotal,
       widgetReady,
-      state
+      state,
+      reset
     };
   }
 }

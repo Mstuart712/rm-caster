@@ -2,25 +2,31 @@
   <div class="mod-container">
     <h6 class="card-title">Armor Status</h6>
     <div class="btn-group spell-types">
-        <div class="row">
-          <div class="col-lg-12">
-            <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {{currentSelection.result}}
-            </button>
-            <ul class="dropdown-menu">
-                <li v-for="item, index in armorTypes" :key="item.title">
-                    <button @click="setModifier(index)" class="dropdown-item" href="#">{{item.title}}</button>
-                </li>
-            </ul>
-            <div class="col-md-12 col-lg-5 margin-top-10">
-                  <input v-model="state.transcend" v-on:keypress="numbersOnly" type="string" class="form-control" id="transcendArmor">
-                  <div class="form-text">Transcend Armor</div>
+      <div class="row">
+        <div class="col-lg-12">
+          <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            {{currentSelection.result}}
+          </button>
+          <ul class="dropdown-menu">
+            <li v-for="item, index in armorTypes" :key="item.title">
+              <button @click="setModifier(index)" class="dropdown-item" href="#">{{item.title}}</button>
+            </li>
+          </ul>
+          <div class="col-md-12 col-lg-12 margin-top-10">
+            <input v-model="state.transcend" @focusout="zeroValidation(state.transcend, validChecks, 'transcend')"
+              v-on:keypress="numbersOnly" type="string" class="form-control"
+              :class="validChecks.transcend ? '' : 'is-invalid'" id="transcendArmor">
+            <div id="validationtranscend" class="invalid-feedback">
+              Must have value of at least 0.
             </div>
-          </div>
-          <div class="col-lg-12">
-            <span class="badge bg-danger">{{state.result}}</span>
+            <div class="form-text">Transcend Armor</div>
           </div>
         </div>
+        <div class="col-lg-12">
+          <span class="badge bg-danger">{{state.result}}</span>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -41,11 +47,14 @@ export default {
       result: 0,
       transcend: 0 
     });
+    const validChecks = reactive({
+      transcend: true
+    }); 
     const modAccess = "armorType";
     const armorTypes = props.armorType.tableList;
     const currentSelection = reactive({ result: "Armor Type" });
     const { findCharacter, setValue, getValue, getSpellMod, setSpellMod, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
-    const { numbersOnly } = useValidation();
+    const { numbersOnly, zeroValidation } = useValidation();
     const currentCharacter = findCharacter(props.characterId)
 
     watch(
@@ -58,11 +67,14 @@ export default {
     watch(
       () => state.transcend,
       () => {
-        if(state.transcend == "" || state.transcend == undefined) {
-          state.transcend = 0;
+        if (state.transcend !== "") {
+          validChecks.transcend = true;
         }
-        setValue("transcendArmor", state.transcend, props.characterId);
-        initComponent()
+        if (state.transcend !== "" && state.transcend !== undefined) {
+          state.transcend = parseInt(state.transcend, 10)
+          setValue("transcendArmor", state.transcend, props.characterId);
+          initComponent()
+        }
       }
     )
 
@@ -108,7 +120,9 @@ export default {
       armorTypes,
       currentSelection,
       currentCharacter,
-      numbersOnly
+      numbersOnly,
+      validChecks,
+      zeroValidation
     };
   },
 }

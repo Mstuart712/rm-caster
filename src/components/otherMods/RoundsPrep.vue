@@ -1,24 +1,35 @@
 <template>
   <div>
     <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Level - Spell</h5>
-            <form>
-                <div class="mb-3">
-                    <input v-model="state.spellLevel" v-on:keypress="numbersOnly" type="string" class="form-control" id="spellLevel">
-                    <div class="form-text">Spell Level.</div>
-                </div>
-                <div class="mb-3">
-                    <input v-model="state.roundsOfPrep" v-on:keypress="numbersOnly" type="string" class="form-control" id="roundsOfPrep">
-                    <div class="form-text">Rounds of Prep.</div>
-                </div>
-                <div class="mb-3">
-                  <input type="checkbox" id="isInstant" v-model="state.isInstant" />
-                  <label class="left-margin-5" for="isInstant"> Instant Cast</label>
-                </div>
-            </form>
-            <span class="badge bg-danger">{{state.result}}</span>
-        </div>
+      <div class="card-body">
+        <h5 class="card-title">Level - Spell</h5>
+        <form>
+          <div class="mb-3">
+            <input v-model="state.spellLevel" @focusout="zeroValidation(state.spellLevel, validChecks, 'spellLevel')"
+              v-on:keypress="numbersOnly" type="string" class="form-control"
+              :class="validChecks.spellLevel ? '' : 'is-invalid'" id="spellLevel">
+            <div id="validationspellLevel" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Spell Level.</div>
+          </div>
+          <div class="mb-3">
+            <input v-model="state.roundsOfPrep"
+              @focusout="zeroValidation(state.roundsOfPrep, validChecks, 'roundsOfPrep')" v-on:keypress="numbersOnly"
+              type="string" class="form-control" :class="validChecks.roundsOfPrep ? '' : 'is-invalid'"
+              id="roundsOfPrep">
+            <div id="validationroundsOfPrep" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Rounds of Prep.</div>
+          </div>
+          <div class="mb-3">
+            <input type="checkbox" id="isInstant" v-model="state.isInstant" />
+            <label class="left-margin-5" for="isInstant"> Instant Cast</label>
+          </div>
+        </form>
+        <span class="badge bg-danger">{{state.result}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -43,8 +54,12 @@ export default {
         difference: 0,
         isInstant: false,
         roundsOfPrep: 0
-     });
-    const { numbersOnly } = useValidation();
+    });
+    const validChecks = reactive({
+      spellLevel: true,
+      roundsOfPrep: true
+    }); 
+    const { numbersOnly, zeroValidation } = useValidation();
     const currentSelection = reactive({ result: "Spell Level" });
     const modAccess = "spellPrep";
 
@@ -52,14 +67,18 @@ export default {
     watch(
       () => [state.spellLevel, state.isInstant, state.roundsOfPrep],
       () => {
-        if(state.spellLevel == "" || state.spellLevel == undefined) {
-          state.spellLevel = 0;
+        if (state.spellLevel !== "") {
+          validChecks.spellLevel = true;
         }
-        if(state.roundsOfPrep == "" || state.roundsOfPrep == undefined) {
-          state.roundsOfPrep = 0;
+        if (state.roundsOfPrep !== "") {
+          validChecks.roundsOfPrep = true;
         }
-        myCharacter.setSpellPrep(modAccess, state.spellLevel, state.roundsOfPrep, state.isInstant, props.characterId);
-        initComponent()
+        if (state.spellLevel !== "" && state.spellLevel !== undefined && state.roundsOfPrep !== "" && state.roundsOfPrep !== undefined) {
+          state.spellLevel = parseInt(state.spellLevel, 10)
+          state.roundsOfPrep = parseInt(state.roundsOfPrep, 10)
+          myCharacter.setSpellPrep(modAccess, state.spellLevel, state.roundsOfPrep, state.isInstant, props.characterId);
+          initComponent()
+        }
       }
     )
 
@@ -68,7 +87,6 @@ export default {
     };
 
     const calcMod = () => {
-      state.roundsOfPrep = parseInt(state.roundsOfPrep, 10)
       let difference = state.difference > 9 ? 9 : state.difference;
       let prep = state.roundsOfPrep > 9 ? 9 : state.roundsOfPrep;
 
@@ -118,7 +136,9 @@ export default {
       currentSelection,
       myCharacter,
       spellDiff,
-      numbersOnly
+      numbersOnly,
+      zeroValidation,
+      validChecks
     };
   },
 }

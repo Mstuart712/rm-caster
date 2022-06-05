@@ -6,8 +6,7 @@ export function useValidation() {
 
   const numbersOnly = (evt) => {
       evt = (evt) ? evt : window.event;
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    console.log(charCode);
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
       if ((charCode > 31 && (charCode < 48 || charCode > 57))) {
         evt.preventDefault();;
       } else {
@@ -15,18 +14,28 @@ export function useValidation() {
       }
   };
 
-  const defaultNullToZero = (evt) => {
-      evt = (evt) ? evt : window.event;
-      var charCode = (evt.which) ? evt.which : evt.keyCode;
-      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
-        evt.preventDefault();;
-      } else {
-        return true;
-      }
-  };
+  const atLeastZeroValidation = (resultObj) => {
+    if (resultObj.result === "" || resultObj.result === undefined) {
+      resultObj.isValid = false
+    } else {
+      resultObj.isValid = true
+    }
+  }
+
+  const zeroValidation = (value, validObj, mod) => {
+    console.log("value", value)
+    if (value === "" || value === undefined) {
+      console.log(validObj)
+      validObj[mod] = false
+      console.log(validObj)
+    } else {
+      validObj[mod] = true
+    } 
+  }
 
   return {
     numbersOnly,
-    defaultNullToZero
+    atLeastZeroValidation,
+    zeroValidation
   };
 }

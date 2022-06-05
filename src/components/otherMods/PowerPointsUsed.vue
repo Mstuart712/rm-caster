@@ -1,20 +1,29 @@
 <template>
   <div>
     <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Power Points</h5>
-            <form>
-                <div class="mb-3">
-                    <input v-model="totalPPLeft.result" v-on:keypress="numbersOnly" type="string" class="form-control" id="ppLeft">
-                    <div class="form-text">Total Power Points Left.</div>
-                </div>
-                <div class="mb-3">
-                    <input v-model="totalPP.result" v-on:keypress="numbersOnly" type="string" class="form-control" id="ppTotal">
-                    <div class="form-text">Total Power Points.</div>
-                </div>
-            </form>
-            <span class="badge bg-danger">{{state.result}}</span>
-        </div>
+      <div class="card-body">
+        <h5 class="card-title">Power Points</h5>
+        <form>
+          <div class="mb-3">
+            <input v-model="totalPPLeft.result" @focusout="atLeastZeroValidation(totalPPLeft)"
+              v-on:keypress="numbersOnly" type="string" class="form-control"
+              :class="totalPPLeft.isValid ? '' : 'is-invalid'" id="ppLeft">
+            <div id="validationppLeft" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Total Power Points Left.</div>
+          </div>
+          <div class="mb-3">
+            <input v-model="totalPP.result" @focusout="atLeastZeroValidation(totalPP)" v-on:keypress="numbersOnly"
+              type="string" class="form-control" :class="totalPP.isValid ? '' : 'is-invalid'" id="ppTotal">
+            <div id="validationppTotal" class="invalid-feedback">
+              Must have value of at least 0.
+            </div>
+            <div class="form-text">Total Power Points.</div>
+          </div>
+        </form>
+        <span class="badge bg-danger">{{state.result}}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -33,24 +42,32 @@ export default {
   setup(props) {
     const modAccess = "powerPoints";
     const state = reactive({ result: 0 })
-    const totalPPLeft = reactive({ result: 0 });
-    const totalPP = reactive({ result: 0 });
+    const totalPPLeft = reactive({
+      result: 0,
+      isValid: true
+    });
+    const totalPP = reactive({
+      result: 0,
+      isValid: true
+    });
     const ppPercent = reactive({ result: 0 });
     const { setSpellModTotals, getSpellModObj, findCharacter, setNewByCharacterId, getSpellModTotal, getOldSpellMod, setOldModByCharacterId } = useCharacterLoader();
-    const { numbersOnly } = useValidation();
+    const { numbersOnly, atLeastZeroValidation } = useValidation();
     const currentCharacter = findCharacter(props.characterId)
 
     watch(
       () => [totalPPLeft.result, totalPP.result],
       () => {
-        if(totalPPLeft.result == "" || totalPPLeft.result == undefined) {
-          totalPPLeft.result = 0;
+        if (totalPPLeft.result !== "") {
+          totalPPLeft.isValid = true;
         }
-        if(totalPP.result == "" || totalPP.result == undefined) {
-          totalPP.result = 0;
+        if (totalPP.result !== "") {
+          totalPP.isValid = true;
         }
-        setSpellModTotals(modAccess, totalPP.result, totalPPLeft.result, props.characterId);
-        initComponent()
+        if (totalPPLeft.result !== "" && totalPPLeft.result !== undefined && totalPP.result !== "" && totalPP.result !== undefined) {
+          setSpellModTotals(modAccess, totalPP.result, totalPPLeft.result, props.characterId);
+          initComponent();
+        }
       }
     )
 
@@ -94,7 +111,8 @@ export default {
       totalPPLeft,
       totalPP,
       ppPercent,
-      numbersOnly
+      numbersOnly,
+      atLeastZeroValidation
     };
   },
 }
