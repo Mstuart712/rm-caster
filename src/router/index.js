@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import CastSpells from '../views/CastSpells.vue'
 import EditCharacter from '../views/CreateCharacterView.vue'
+import FastAttack from '../views/FastAttack.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
           path: 'edit-stats',
           name: 'editstats',
           component: EditCharacter,
+        },
+        {
+          path: 'fast-attack',
+          name: 'fastattack',
+          component: FastAttack,
         },
       ],
     }

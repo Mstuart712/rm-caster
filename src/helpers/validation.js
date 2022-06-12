@@ -23,7 +23,6 @@ export function useValidation() {
   }
 
   const zeroValidation = (value, validObj, mod) => {
-    console.log("value", value)
     if (value === "" || value === undefined) {
       console.log(validObj)
       validObj[mod] = false

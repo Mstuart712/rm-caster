@@ -1,18 +1,19 @@
 <template>
   <div>
     <div class="container">
-      <div class="card" style="width: 18rem;">
-          <div class="card-body">
-              <h5 class="card-title">Character Menu</h5>
-              <ul class="list-group list-group-horizontal">
-                <li @click="editStats()" class="list-group-item link-hover">Edit Character</li>
-                <li @click="castSpells()" class="list-group-item link-hover">Spell Casting</li>
-              </ul>
-          </div>
+      <div class="card" style="width: 24rem;">
+        <div class="card-body">
+          <h5 class="card-title">Character Menu</h5>
+          <ul class="list-group list-group-horizontal">
+            <li @click="editStats()" class="list-group-item link-hover">Edit Character</li>
+            <li @click="castSpells()" class="list-group-item link-hover">Spell Casting</li>
+            <li @click="fastAttack()" class="list-group-item link-hover">Fast Attack</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="container">
-        <RouterView />
+      <RouterView />
     </div>
   </div>
 </template>
@@ -38,9 +39,14 @@ export default {
       router.push({ path: '/character/' + route.params.id + '/edit-stats' })
     }
 
+    function fastAttack() {
+      router.push({ path: '/character/' + route.params.id + '/fast-attack' })
+    }
+
     return {
       castSpells,
-      editStats
+      editStats,
+      fastAttack
     };
   },
 }

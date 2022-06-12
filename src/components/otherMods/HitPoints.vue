@@ -74,6 +74,7 @@ export default {
     )
 
     const calcMod = (newHpPercent) => {
+      newHpPercent = Math.round(newHpPercent)
       for(const item of props.hitPoints.tableList) {
         if(newHpPercent >= item.min && newHpPercent <= item.max){
             state.result = item.modifiers[currentCharacter.casterTypeIndex];

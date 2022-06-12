@@ -72,6 +72,7 @@ export default {
     )
 
     const calcMod = (newPpPercent) => {
+      newPpPercent = Math.round(newPpPercent)
       for(const item of props.powerPoints.tableList) {
         if(newPpPercent >= item.min && newPpPercent <= item.max){
             state.result = item.modifiers[currentCharacter.casterTypeIndex];
