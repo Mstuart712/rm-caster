@@ -81,22 +81,28 @@
           </div>
         </div>
         <div class="col-lg-12 margin-top-15">
-          <span class="badge bg-danger">Weapon Vs Armor: {{state.vsArmor}}</span>
+          <span class="badge bg-danger">Weapon Vs Armor:
+            {{state.vsArmor}}</span>
         </div>
         <div class="col-lg-12">
-          <span class="badge bg-danger">Dice Roll For Crit: {{state.toCrit}}</span>
+          <span :class="success.toCrit ? 'bg-success' : 'bg-danger'" class="badge">Dice Roll For Crit:
+            {{state.toCrit}}</span>
         </div>
         <div class="col-lg-12">
-          <span class="badge bg-danger">To Hit: {{state.toHit}}</span>
+          <span :class="success.toHit ? 'bg-success' : 'bg-danger'" class="badge">To Hit:
+            {{state.toHit}}</span>
         </div>
         <div class="col-lg-12">
-          <span class="badge bg-danger">Damage Multiplier: x{{state.multi}}</span>
+          <span :class="success.multiDamage ? 'bg-success' : 'bg-danger'" class="badge">Damage Multiplier:
+            x{{state.multi}}</span>
         </div>
         <div class="col-lg-12">
-          <span class="badge bg-danger">Damage: {{state.hitsDelievered}}</span>
+          <span :class="success.damage ? 'bg-success' : 'bg-danger'" class="badge">Damage:
+            {{state.hitsDelievered}}</span>
         </div>
         <div class="col-lg-12">
-          <span class="badge bg-danger">Damage With Multiplier: {{state.multiDamage}}</span>
+          <span :class="success.multiDamage ? 'bg-success' : 'bg-danger'" class="badge">Damage With Multiplier:
+            {{state.multiDamage}}</span>
         </div>
         <button class="btn btn-primary margin-left-10 margin-top-15" @click="submit">Submit</button>
       </div>
@@ -144,6 +150,12 @@ export default {
           multi: 0,
           multiDamage: 0
         });
+        const success = reactive({
+          toHit: false,
+          toCrit: false,
+          multiDamage: false,
+          damage: false
+        });
         const validChecks = reactive({
           ob: true,
           db: true,
@@ -176,11 +188,33 @@ export default {
           let answer = 0;
           multi = state.toHit;
           multi = multi - 124;
-          console.log("multi", multi)
           if (multi > 0) {
             answer = Math.ceil(multi / 50);
           }
           return answer + 1;
+        };
+
+        const checkSuccess = () => {
+          if (state.toHit > 74) {
+            success.toHit = true;
+            if (state.hitsDelievered > 0) {
+              success.damage = true;
+            } else {
+              success.damage = false;
+            }
+            if (state.multi > 1) {
+              success.multiDamage = true;
+            } else {
+              success.multiDamage = false;
+            }
+            if (state.dice >= state.toCrit) {
+              success.toCrit = true;
+            } else {
+              success.toCrit = false;
+            }
+          } else {
+            success.toHit = false;
+          }
         };
         
         const submit = () => {
@@ -196,7 +230,8 @@ export default {
           state.hitsDelievered = total;
           state.toHit = toHit;
           state.multi = getMulti();
-          state.multiDamage = state.hitsDelievered * state.multi;
+          state.multiDamage = (state.hits * state.multi) - state.armorType;
+          checkSuccess();
         };
         
         return {
@@ -211,7 +246,9 @@ export default {
           state,
           submit,
           toCrit,
-          getMulti
+          getMulti,
+          checkSuccess,
+          success
         };
     },
 }
