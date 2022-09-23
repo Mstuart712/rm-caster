@@ -12,6 +12,9 @@
             <ul class="list-group list-group-flush" v-for="item in spellResults.results" :key="item.name">
                 <template v-if="isInRange(item)"><span class="badge rounded-pill bg-success">Current Result</span></template>
                 <li class="list-group-item"> <template v-if="!item.unusual">{{item.min}}</template> <template v-if="!item.unusual && item.min && item.max">-</template> {{item.max}} {{item.title}}</li>
+                <template v-if="isInRange(item)">
+                  <span class="spell-description">{{item.description}}</span>
+                </template>
             </ul>
           </div>
         </div>
@@ -25,7 +28,6 @@ import spellTable from '../assets/spellTable.json'
 import ResultBox from './ResultBox.vue'
 import { useRoute } from 'vue-router'
 import { useCharacterLoader } from './character/CharacterLoader.js'
-
 
 export default {
   name: 'SpellManeuverTable',
@@ -75,5 +77,9 @@ export default {
     .bg-success {
         margin: 10px 0 0 10px;
         width: 100px
+    }
+    .spell-description {
+      font-size: 12px;
+      padding: 5px 5px 5px 15px;
     }
 </style>

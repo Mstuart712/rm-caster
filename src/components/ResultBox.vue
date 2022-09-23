@@ -24,6 +24,8 @@
 import { useCharacterLoader } from './character/CharacterLoader.js'
 import { reactive, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from "vue-toastification";
+const toast = useToast();
 
 export default {
   name: 'ResultBox',
@@ -52,7 +54,6 @@ export default {
     )
 
     function reset() {
-      console.log("this is hit")
       resetOldMods(props.characterId)
       router.go(0)
     }
@@ -62,8 +63,16 @@ export default {
         state.newTotal = 0;
       }
       setNewModByCharacterId(props.characterId, getSpellModTotal(props.characterId) + parseFloat(state.newTotal) + parseFloat(50))
-      console.log("raw total: ", getSpellModTotal(props.characterId))
-      console.log("mod total: ", getModifiedTotal(props.characterId))
+      console.log("raw total: ", getSpellModTotal(props.characterId));
+      console.log("mod total: ", getModifiedTotal(props.characterId));
+      
+      if(state.newTotal == 66) {
+        this.toast.error("Unusual Event Was Rolled " + state.newTotal);
+      } else if(state.newTotal == 100) {
+        this.toast.info("Unusual Success Was Rolled " + state.newTotal);
+      } else {
+        this.toast.success("Spell Submitted With " + getModifiedTotal(props.characterId));
+      }
     }
 
     const initComponent = async () => {
@@ -77,7 +86,8 @@ export default {
       addNewSpellTotal,
       widgetReady,
       state,
-      reset
+      reset,
+      toast
     };
   }
 }

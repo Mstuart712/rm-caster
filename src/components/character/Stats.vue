@@ -66,12 +66,15 @@
 
 <script>
 import { userCharacter } from '../../stores/character';
-import { reactive } from 'vue'
+import { reactive, toDisplayString } from 'vue'
 import { Stats } from '../../generics/statsClass.js'
+import { useToast } from "vue-toastification";
 
 let myStats = new Stats("0","0","0","0","0","0","0","0","0","0");
+const toast = useToast();
 
 export default {
+
   name: 'Stats',
   props: { 
     id: String,
@@ -103,8 +106,9 @@ export default {
         myCharacter.setValue("level", state.level, props.id)
         myCharacter.setValue("name", state.name, props.id)
         myCharacter.setNewStats(state.stats, props.id)
-      }else {
-        console.log("not valid");
+        this.toast.success("Character Saved");
+      } else {
+        this.toast.error("Something went wrong saving the character");
       }
     }
 
@@ -142,7 +146,8 @@ export default {
       newTotal,
       state,
       oldMod,
-      validate
+      validate,
+      toast
     };
   },
 }
