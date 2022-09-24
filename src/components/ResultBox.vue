@@ -14,6 +14,8 @@
         <br>
         <span>Bonus Before Dice Roll: {{state.bonus}}</span>
         <br>
+        <span>Dice Roll Needed: {{getDiceNeeded(state.bonus)}}</span>
+        <br>
         <span>Chance Of Success: {{getSuccessChance(state.bonus)}}%</span>
         <br>
         <span>Result: {{state.result}}</span>
@@ -76,9 +78,18 @@ export default {
         this.toast.success("Spell Submitted With " + getModifiedTotal(props.characterId));
       }
     }
+    function getDiceNeeded(bonus) {
+      let total = 111 - bonus;
+      return total;
+    }
     function getSuccessChance(bonus) {
       let total = 111 - bonus;
-      return percentage(total, 100);
+      total = 100 - total;
+      total = percentage(total, 100)
+      if(total < 1) {
+        return 'Dont do it'
+      }
+      return total;
     }
     function percentage(partialValue, totalValue) {
       return (100 * partialValue) / totalValue;
@@ -97,7 +108,8 @@ export default {
       state,
       reset,
       toast,
-      getSuccessChance
+      getSuccessChance,
+      getDiceNeeded
     };
   }
 }
