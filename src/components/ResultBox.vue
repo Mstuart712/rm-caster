@@ -6,13 +6,15 @@
         <form @submit.prevent="addNewSpellTotal">
           <div class="mb-3">
             <input v-model="state.newTotal" type="string" class="form-control" id="spellInput"
-              aria-describedby="resultHelp">
+              aria-describedby="resultHelp" autocomplete="off">
           </div>
           <button type="submit" class="btn btn-primary">Submit</button>
           <button class="btn btn-danger margin-left-10" @click="reset">Reset</button>
         </form>
         <br>
         <span>Bonus Before Dice Roll: {{state.bonus}}</span>
+        <br>
+        <span>Chance Of Success: {{getSuccessChance(state.bonus)}}%</span>
         <br>
         <span>Result: {{state.result}}</span>
       </div>
@@ -74,6 +76,13 @@ export default {
         this.toast.success("Spell Submitted With " + getModifiedTotal(props.characterId));
       }
     }
+    function getSuccessChance(bonus) {
+      let total = 111 - bonus;
+      return percentage(total, 100);
+    }
+    function percentage(partialValue, totalValue) {
+      return (100 * partialValue) / totalValue;
+    } 
 
     const initComponent = async () => {
       state.bonus = getSpellModTotal(props.characterId) + parseFloat(50);
@@ -87,7 +96,8 @@ export default {
       widgetReady,
       state,
       reset,
-      toast
+      toast,
+      getSuccessChance
     };
   }
 }
